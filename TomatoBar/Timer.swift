@@ -335,7 +335,7 @@ class TBTimer: ObservableObject {
         else {
             currentWorkInterval += 1
         }
-        TBStatusItem.shared.setIcon(name: .work)
+        // TBStatusItem.shared.setIcon(name: .work)
         player.playWindup()
         player.startTicking()
         startTimer(seconds: currentPresetInstance.workIntervalLength * 60)

@@ -122,7 +122,8 @@ class TBTimer: ObservableObject {
         stateMachine.addAnyHandler(.idle => .any, handler: onIdleEnd)
         stateMachine.addAnyHandler(.rest => .work, handler: onRestEnd)
         stateMachine.addAnyHandler(.any => .work, handler: onWorkStart)
-        stateMachine.addAnyHandler(.work => .any, handler: onWorkEnd)
+        stateMachine.addAnyHandler(.work => .idle, order: 0, handler: onWorkFinish)
+        stateMachine.addAnyHandler(.work => .any, order: 1, handler: onWorkEnd)
         stateMachine.addAnyHandler(.any => .rest, handler: onRestStart)
         stateMachine.addAnyHandler(.any => .idle, handler: onIdleStart)
         stateMachine.addAnyHandler(.any => .any, handler: { ctx in
@@ -346,6 +347,15 @@ class TBTimer: ObservableObject {
                 }
             }
         }
+    }
+
+    private func onWorkFinish(context _: TBStateMachine.Context) {
+        player.playDing()
+        notificationCenter.send(
+            title: NSLocalizedString("TBTimer.onWorkFinish.title", comment: "Work finished title"),
+            body: NSLocalizedString("TBTimer.onWorkFinish.body", comment: "Work finished body"),
+            category: .workFinished
+        )
     }
 
     private func onWorkEnd(context _: TBStateMachine.Context) {

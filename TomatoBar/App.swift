@@ -21,9 +21,7 @@ struct TBApp: App {
     }
 
     var body: some Scene {
-        Settings {
-            EmptyView()
-        }
+        Settings {}
     }
 }
 
